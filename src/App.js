@@ -28,8 +28,8 @@ function App() {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    if (!price && !ammount) {
-      handleAlert(true, 'danger', 'please enter a value')
+    if (!price || !ammount) {
+      handleAlert(true, 'error', 'please enter a value')
     } else if (isEditing) {
       setItemList(
         itemList.map((item) => {
@@ -112,8 +112,8 @@ function App() {
         </div>
         <form className='grocery-form' onSubmit={(e) => handleSubmit(e)}>
           <div className='form-control'>
-            <input type='number' className={`form-control grocery${alert.show ? ' error' : ''}`} placeholder='Ammount e.g. 1' value={ammount} onChange={(e) => setAmmount(e.target.value)} />
-            <input type='text' className={`form-control grocery${alert.show ? ' error' : ''}`} placeholder='Price e.g. 1.00' value={price} onChange={(e) => setPrice(e.target.value)} />
+            <input type='number' className={`form-control grocery${alert.type === 'error' ? ' error' : ''}`} placeholder='Ammount e.g. 1' value={ammount} onChange={(e) => setAmmount(e.target.value)} />
+            <input type='text' className={`form-control grocery${alert.type === 'error' ? ' error' : ''}`} placeholder='Price e.g. 1.00' value={price} onChange={(e) => setPrice(e.target.value)} />
             <button type='submit' className='submit-btn'>{isEditing ? 'Edit' : 'Add'}</button>
           </div>
         </form>
