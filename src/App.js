@@ -108,19 +108,22 @@ function App() {
         {alert.show && <Alert {...alert} removeAlert={handleAlert} itemList={itemList} />}
         <div className='form-header'>
           <h3>Grocery list Calculator</h3>
-          <span className='grocery-total'>Total: {totalPrice}</span>
+
         </div>
         <form className='grocery-form' onSubmit={(e) => handleSubmit(e)}>
           <div className='form-control'>
             <input type='number' className={`form-control grocery${alert.type === 'error' ? ' error' : ''}`} placeholder='Ammount e.g. 1' value={ammount} onChange={(e) => setAmmount(e.target.value)} />
-            <input type='text' className={`form-control grocery${alert.type === 'error' ? ' error' : ''}`} placeholder='Price e.g. 1.00' value={price} onChange={(e) => setPrice(e.target.value)} />
+            <input type='number' step='0.01' className={`form-control grocery${alert.type === 'error' ? ' error' : ''}`} placeholder='Price e.g. 1.00' value={price} onChange={(e) => setPrice(e.target.value)} />
             <button type='submit' className='submit-btn'>{isEditing ? 'Edit' : 'Add'}</button>
           </div>
         </form>
         <List itemList={itemList} removeItem={removeItem} editItem={editItem} />
-        <button className='clear-btn' onClick={clearList}>
-          clear items
+        <div className='form-footer'>
+          <button className='clear-btn' onClick={clearList}>
+            clear items
         </button>
+          <div className='grocery-total'>Total: {totalPrice}</div>
+        </div>
       </section>
     </div>
   )
