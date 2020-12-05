@@ -108,7 +108,7 @@ function App() {
         {alert.show && <Alert {...alert} removeAlert={handleAlert} itemList={itemList} />}
         <div className='form-header'>
           <h3>Grocery list Calculator</h3>
-          <span className='grocery-total'>Total: {totalPrice}</span>
+
         </div>
         <form className='grocery-form' onSubmit={(e) => handleSubmit(e)}>
           <div className='form-control'>
@@ -118,6 +118,7 @@ function App() {
           </div>
         </form>
         <List itemList={itemList} removeItem={removeItem} editItem={editItem} />
+        <span className='grocery-total'>Total: {totalPrice}</span>
         <button className='clear-btn' onClick={clearList}>
           clear items
         </button>
