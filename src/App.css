@@ -169,6 +169,7 @@ Variables
     box-shadow: var(--light-shadow);
     transition: var(--transition);
     padding: 2rem;
+    position: relative;
   }
   .section-center:hover {
     box-shadow: var(--dark-shadow);
@@ -183,6 +184,9 @@ Variables
     border-radius: 0.25rem;
     letter-spacing: var(--spacing);
     text-transform: capitalize;
+    position: absolute;
+    top: .5rem;
+    width: calc(100% - 4rem);
   }
   .alert-danger, .alert-error {
     color: #721c24;
