@@ -294,12 +294,10 @@ Variables
     background: transparent;
     border-color: transparent;
     color: var(--clr-red-light);
-    margin: 0 auto;
     font-size: 0.85rem;
     letter-spacing: var(--spacing);
     cursor: pointer;
     transition: var(--transition);
-    margin-top: 1.25rem;
   }
   .clear-btn:hover {
     color: var(--clr-red-dark);
@@ -316,9 +314,14 @@ Variables
       border-color: red;
   }
 
+  .form-footer {
+    display: flex;
+    margin-top: 1.25rem;
+    justify-content: space-around;
+  }
+
   .grocery-total {
-    float: right;
-    padding-right: 4rem;
+    color: cornflowerblue;
   }
 
   @media screen and (min-width: 480px) {
