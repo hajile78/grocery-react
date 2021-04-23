@@ -20,9 +20,10 @@ function App() {
   const [isEditing, setIsEditing] = useState(false)
   const [editId, setEditId] = useState(null)
   const [totalPrice, setTotalPrice] = useState(null)
+  const [addTax, setAddTax] = useState(false)
 
   const addItem = (price, ammount) => {
-    const newItem = { id: new Date().getTime().toString(), price: formatValue(price), ammount: ammount, tax: calculateTax(price * ammount).toFixed(2) }
+    const newItem = { id: new Date().getTime().toString(), price: formatValue(price), ammount: ammount, tax: addTax ? calculateTax(price * ammount).toFixed(2) : 0 }
     setItemList([newItem, ...itemList])
   }
 
@@ -34,7 +35,7 @@ function App() {
       setItemList(
         itemList.map((item) => {
           if (item.id === editId) {
-            return { ...item, price, ammount, tax: calculateTax(price * ammount).toFixed(2) }
+            return { ...item, price, ammount, tax: addTax ? calculateTax(price * ammount).toFixed(2) : '0'.toFixed(2) }
           }
           return item
         })
@@ -50,6 +51,7 @@ function App() {
     }
     setPrice('')
     setAmmount('')
+    setAddTax(false)
   }
 
   const formatValue = (value) => {
@@ -90,11 +92,14 @@ function App() {
   const calculateTax = (total) => total * .075
 
   const calculateTotal = () => {
-    let total = itemList.reduce((total, item) => {
-      return total + parseFloat(item.price * item.ammount)
+    let total = itemList.reduce((t, item) => {
+      return t + parseFloat(item.price * item.ammount)
     }, 0)
-    total += calculateTax(total)
-    setTotalPrice(`$ ${formatValue(total.toFixed(2))}`)
+    let tax = itemList.reduce((tax, item) => {
+      return tax + item.tax
+    }, 0)
+    let finalTotal = parseFloat(total) + parseFloat(tax)
+    setTotalPrice(`$ ${formatValue(finalTotal.toFixed(2))}`)
   }
 
   useEffect(() => {
@@ -112,9 +117,15 @@ function App() {
         </div>
         <form className='grocery-form' onSubmit={(e) => handleSubmit(e)}>
           <div className='form-control'>
-            <input type='number' className={`form-control grocery${alert.type === 'error' ? ' error' : ''}`} placeholder='Ammount e.g. 1' value={ammount} onChange={(e) => setAmmount(e.target.value)} />
-            <input type='number' step='0.01' className={`form-control grocery${alert.type === 'error' ? ' error' : ''}`} placeholder='Price e.g. 1.00' value={price} onChange={(e) => setPrice(e.target.value)} />
-            <button type='submit' className='submit-btn'>{isEditing ? 'Edit' : 'Add'}</button>
+            <div className='row'>
+              <input type='number' className={`form-control grocery${alert.type === 'error' ? ' error' : ''}`} placeholder='Ammount e.g. 1' value={ammount} onChange={(e) => setAmmount(e.target.value)} />
+              <input type='number' step='0.01' className={`form-control grocery${alert.type === 'error' ? ' error' : ''}`} placeholder='Price e.g. 1.00' value={price} onChange={(e) => setPrice(e.target.value)} />
+            </div>
+            <div className='row right'>
+              <label htmlFor='addTax'>Add Tax</label>
+              <input type='checkbox' checked={addTax} onChange={(e) => setAddTax(!addTax)} />
+              <button type='submit' className='submit-btn'>{isEditing ? 'Edit' : 'Add'}</button>
+            </div>
           </div>
         </form>
         <List itemList={itemList} removeItem={removeItem} editItem={editItem} />
