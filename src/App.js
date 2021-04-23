@@ -14,7 +14,7 @@ const getLocalStorage = () => {
 
 function App() {
   const [itemList, setItemList] = useState(getLocalStorage() || [])
-  const [ammount, setAmmount] = useState(null)
+  const [amount, setAmount] = useState(null)
   const [price, setPrice] = useState(null)
   const [alert, setAlert] = useState({ show: false, message: '', type: '' })
   const [isEditing, setIsEditing] = useState(false)
@@ -22,35 +22,35 @@ function App() {
   const [totalPrice, setTotalPrice] = useState(null)
   const [addTax, setAddTax] = useState(false)
 
-  const addItem = (price, ammount) => {
-    const newItem = { id: new Date().getTime().toString(), price: formatValue(price), ammount: ammount, tax: addTax ? calculateTax(price * ammount).toFixed(2) : 0 }
+  const addItem = (price, amount) => {
+    const newItem = { id: new Date().getTime().toString(), price: formatValue(price), amount: amount, tax: addTax ? calculateTax(price * amount).toFixed(2) : 0 }
     setItemList([newItem, ...itemList])
   }
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    if (!price || !ammount) {
+    if (!price || !amount) {
       handleAlert(true, 'error', 'please enter a value')
     } else if (isEditing) {
       setItemList(
         itemList.map((item) => {
           if (item.id === editId) {
-            return { ...item, price, ammount, tax: addTax ? calculateTax(price * ammount).toFixed(2) : '0'.toFixed(2) }
+            return { ...item, price, amount, tax: addTax ? calculateTax(price * amount).toFixed(2) : '0'.toFixed(2) }
           }
           return item
         })
       )
       setPrice('')
-      setAmmount('')
+      setAmount('')
       setEditId(null)
       setIsEditing(false)
       handleAlert(true, 'success', 'value changed')
     } else {
-      addItem(price, ammount)
+      addItem(price, amount)
       handleAlert(true, 'success', 'value added')
     }
     setPrice('')
-    setAmmount('')
+    setAmount('')
     setAddTax(false)
   }
 
@@ -86,14 +86,14 @@ function App() {
     setIsEditing(true)
     setEditId(id)
     setPrice(specificItem.price)
-    setAmmount(specificItem.ammount)
+    setAmount(specificItem.amount)
   }
 
   const calculateTax = (total) => total * .075
 
   const calculateTotal = () => {
     let total = itemList.reduce((t, item) => {
-      return t + parseFloat(item.price * item.ammount)
+      return t + parseFloat(item.price * item.amount)
     }, 0)
     let tax = itemList.reduce((tax, item) => {
       return tax + item.tax
@@ -118,8 +118,8 @@ function App() {
         <form className='grocery-form' onSubmit={(e) => handleSubmit(e)}>
           <div className='form-control'>
             <div className='row'>
-              <input type='number' className={`form-control grocery${alert.type === 'error' ? ' error' : ''}`} placeholder='Ammount e.g. 1' value={ammount} onChange={(e) => setAmmount(e.target.value)} />
-              <input type='number' step='0.01' className={`form-control grocery${alert.type === 'error' ? ' error' : ''}`} placeholder='Price e.g. 1.00' value={price} onChange={(e) => setPrice(e.target.value)} />
+              <input type='number' min='0' step='1' oninput='validity.valid||(value="");' className={`form-control grocery${alert.type === 'error' ? ' error' : ''}`} placeholder='# Of e.g. 1' value={amount} onChange={(e) => setAmount(e.target.value)} />
+              <input type='number' min='0' step='0.01' oninput='validity.valid||(value="");' className={`form-control grocery${alert.type === 'error' ? ' error' : ''}`} placeholder='Price e.g. 1.00' value={price} onChange={(e) => setPrice(e.target.value)} />
             </div>
             <div className='row right'>
               <label htmlFor='addTax'>Add Tax</label>
