@@ -281,6 +281,9 @@ Variables
   .grocery-item:hover .title {
     color: var(--clr-grey-5);
   }
+  .grocery-item.header {
+    font-size: small;
+}
   .title {
     margin-bottom: 0;
     color: var(--clr-grey-1);
@@ -326,12 +329,12 @@ Variables
     color: var(--clr-red-dark);
   }
 
-  .tax::before {
+  /* .tax::before {
     content: 'Tax';
     font-size: .75rem;
     top: 0;
     padding-right: .5rem;
-  }
+  } */
 
   .error{
       border-color: red;
