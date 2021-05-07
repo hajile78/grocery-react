@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import Alert from './components/Alert'
 import List from './components/List'
 import './App.css'
@@ -21,7 +21,8 @@ function App() {
   const [editId, setEditId] = useState(null)
   const [totalPrice, setTotalPrice] = useState(null)
   const [addTax, setAddTax] = useState(false)
-
+  
+  const formFocus = useRef()
   const addItem = (price, amount) => {
     const newItem = { id: new Date().getTime().toString(), price: formatValue(price), amount: amount, tax: addTax ? calculateTax(price * amount).toFixed(2) : 0 }
     setItemList([newItem, ...itemList])
@@ -105,21 +106,22 @@ function App() {
   useEffect(() => {
     localStorage.setItem('items', JSON.stringify(itemList))
     calculateTotal()
-  }, [itemList])
+    formFocus.current.focus()
+  }, [itemList, formFocus])
 
   return (
     <div className='App'>
       <section className='section-center'>
         {alert.show && <Alert {...alert} removeAlert={handleAlert} itemList={itemList} />}
         <div className='form-header'>
-          <h3>Grocery list Calculator</h3>
+          <h1 className='header-title'>Cart Total Estimator</h1>
 
         </div>
         <form className='grocery-form' onSubmit={(e) => handleSubmit(e)}>
           <div className='form-control'>
             <div className='row'>
-              <input type='number' min='0' step='1' oninput='validity.valid||(value="");' className={`form-control grocery${alert.type === 'error' ? ' error' : ''}`} placeholder='# Of e.g. 1' value={amount} onChange={(e) => setAmount(e.target.value)} />
-              <input type='number' min='0' step='0.01' oninput='validity.valid||(value="");' className={`form-control grocery${alert.type === 'error' ? ' error' : ''}`} placeholder='Price e.g. 1.00' value={price} onChange={(e) => setPrice(e.target.value)} />
+              <input type='number' ref={formFocus} min='0' step='1' onInput='validity.valid||(value="");' className={`form-control grocery${alert.type === 'error' ? ' error' : ''}`} placeholder='# Of e.g. 1' value={amount} onChange={(e) => setAmount(e.target.value)} />
+              <input type='number' min='0' step='0.01' onInput='validity.valid||(value="");' className={`form-control grocery${alert.type === 'error' ? ' error' : ''}`} placeholder='Price e.g. 1.00' value={price} onChange={(e) => setPrice(e.target.value)} />
             </div>
             <div className='row right'>
               <label htmlFor='addTax'>Add Tax</label>
