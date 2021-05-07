@@ -43,13 +43,13 @@ Variables
     --dark-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
     --max-width: 1170px;
     --fixed-width: 620px;
+    /* font sizes */
+    --font-h1: 3rem;
+    --font-h2: 2rem;
+    --font-h3: 1.25rem;
+    --font-h4: 0.875rem;
   }
-  /*
-  =============== 
-  Global Styles
-  ===============
-  */
-  
+  /*  Global Styles */  
   *,
   ::after,
   ::before {
@@ -82,16 +82,16 @@ Variables
     margin-bottom: 0.75rem;
   }
   h1 {
-    font-size: 3rem;
+    font-size: var(--font-h1);
   }
   h2 {
-    font-size: 2rem;
+    font-size: var(--font-h2);
   }
   h3 {
-    font-size: 1.25rem;
+    font-size: var(--font-h3);
   }
   h4 {
-    font-size: 0.875rem;
+    font-size: var(--font-h4);
   }
   p {
     margin-bottom: 1.25rem;
@@ -99,6 +99,7 @@ Variables
   }
   .header-title {
     font-family: 'Amatic SC';
+    font-size: var(--font-h2);
   }
   @media screen and (min-width: 800px) {
     h1 {
