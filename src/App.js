@@ -114,7 +114,7 @@ function App() {
       <section className='section-center'>
         {alert.show && <Alert {...alert} removeAlert={handleAlert} itemList={itemList} />}
         <div className='form-header'>
-          <h3>Cart Total Estimator</h3>
+          <h1 className='header-title'>Cart Total Estimator</h1>
 
         </div>
         <form className='grocery-form' onSubmit={(e) => handleSubmit(e)}>
