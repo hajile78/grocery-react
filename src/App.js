@@ -184,7 +184,6 @@ function App() {
         <form
           method="post"
           data-netlify="true"
-          action="/success/"
           data-netlify-honeypot="bot-field"
           data-netlify-recaptcha="true"
         >
