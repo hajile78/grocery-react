@@ -1,11 +1,5 @@
 import React, { useState } from "react";
 
-const encode = (data) => {
-  return Object.keys(data)
-    .map((key) => encodeURIComponent(key) + "=" + encodeURIComponent(data[key]))
-    .join("&");
-};
-
 export default function Form() {
   const [success, setSuccess] = useState(false);
 
@@ -18,7 +12,10 @@ export default function Form() {
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: new URLSearchParams(formData).toString(),
     })
-      .then(() => setSuccess(true))
+      .then(() => {
+        setSuccess(true);
+        myForm.reset();
+      })
       .catch((error) => console.log(error));
   };
 
