@@ -3,6 +3,7 @@ import Alert from "./components/Alert";
 import List from "./components/List";
 import Form from "./components/Form";
 import "./App.css";
+import { itemProps } from "./components/Props";
 
 const getLocalStorage = () => {
   let list = localStorage.getItem("items");
@@ -14,27 +15,29 @@ const getLocalStorage = () => {
 };
 
 function App() {
-  const [itemList, setItemList] = useState(getLocalStorage() || []);
-  const [amount, setAmount] = useState(null);
-  const [price, setPrice] = useState(null);
+  const [itemList, setItemList] = useState<itemProps[]>(
+    getLocalStorage() || []
+  );
+  const [amount, setAmount] = useState<number>();
+  const [price, setPrice] = useState<number>();
   const [alert, setAlert] = useState({ show: false, message: "", type: "" });
   const [isEditing, setIsEditing] = useState(false);
-  const [editId, setEditId] = useState(null);
-  const [totalPrice, setTotalPrice] = useState(null);
+  const [editId, setEditId] = useState<string>("");
+  const [totalPrice, setTotalPrice] = useState<string>("");
   const [addTax, setAddTax] = useState(false);
 
   const formFocus = useRef();
-  const addItem = (price, amount) => {
-    const newItem = {
+  const addItem = (price: number, amount: number) => {
+    const newItem: itemProps = {
       id: new Date().getTime().toString(),
       price: formatValue(price),
       amount: amount,
-      tax: addTax ? calculateTax(price * amount).toFixed(2) : 0,
+      tax: addTax ? calculateTax(price * amount) : 0,
     };
     setItemList([newItem, ...itemList]);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.MouseEvent) => {
     e.preventDefault();
     if (!price || !amount) {
       handleAlert(true, "error", "please enter a value");
@@ -46,38 +49,36 @@ function App() {
               ...item,
               price,
               amount,
-              tax: addTax
-                ? calculateTax(price * amount).toFixed(2)
-                : "0".toFixed(2),
+              tax: addTax ? calculateTax(price * amount) : 0,
             };
           }
           return item;
         })
       );
-      setPrice("");
-      setAmount("");
-      setEditId(null);
+      setPrice(0);
+      setAmount(0);
+      setEditId("");
       setIsEditing(false);
       handleAlert(true, "success", "value changed");
     } else {
       addItem(price, amount);
       handleAlert(true, "success", "value added");
     }
-    setPrice("");
-    setAmount("");
+    setPrice(0);
+    setAmount(0);
     setAddTax(false);
   };
 
-  const formatValue = (value) => {
+  const formatValue = (value: number) => {
     let fv = value.toString().split(".");
     if (value.toString().indexOf(".") >= 0) {
       if (fv[1].length < 2) {
-        return fv[0] + "." + fv[1] + "0";
+        return Number(fv[0] + "." + fv[1] + "0");
       } else {
-        return parseFloat(value).toFixed(2).toString();
+        return value;
       }
     } else {
-      return (value += ".00");
+      return Number(value + ".00");
     }
   };
 
@@ -90,30 +91,30 @@ function App() {
     setItemList([]);
   };
 
-  const removeItem = (id) => {
+  const removeItem = (id: string) => {
     handleAlert(true, "danger", "item removed");
     setItemList(itemList.filter((item) => item.id !== id));
   };
 
-  const editItem = (id) => {
+  const editItem = (id: string) => {
     const specificItem = itemList.find((item) => item.id === id);
     setIsEditing(true);
     setEditId(id);
-    setPrice(specificItem.price);
-    setAmount(specificItem.amount);
+    setPrice(specificItem ? specificItem.price : 0);
+    setAmount(specificItem ? specificItem.amount : 0);
   };
 
-  const calculateTax = (total) => total * 0.075;
+  const calculateTax = (total: number) => total * 0.075;
 
   const calculateTotal = () => {
     let total = itemList.reduce((t, item) => {
-      return t + parseFloat(item.price * item.amount);
+      return t + item.price * item.amount;
     }, 0);
     let tax = itemList.reduce((tax, item) => {
       return tax + item.tax;
     }, 0);
-    let finalTotal = parseFloat(total) + parseFloat(tax);
-    setTotalPrice(`$ ${formatValue(finalTotal.toFixed(2))}`);
+    let finalTotal = total + tax;
+    setTotalPrice(`$ ${formatValue(finalTotal)}`);
   };
 
   useEffect(() => {

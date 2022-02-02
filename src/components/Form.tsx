@@ -1,12 +1,13 @@
-import React, { useState } from "react";
+import React, { FormEventHandler, useState } from "react";
+
+type event = {}
 
 export default function Form() {
   const [success, setSuccess] = useState(false);
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    let myForm = document.getElementById("contact");
-    let formData = new FormData(myForm);
+  const handleSubmit = () => {
+    let myForm: HTMLFormElement = document.getElementById("contact") as HTMLFormElement;
+    let formData: URLSearchParams = new FormData(myForm) as URLSearchParams;
     fetch("/", {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
