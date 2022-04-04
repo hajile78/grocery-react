@@ -181,9 +181,9 @@ function App() {
           <div className="grocery-total">Total: {totalPrice}</div>
         </div>
       </section>
-      <section className="section-center">
+      {/* <section className="section-center">
         <Form />
-      </section>
+      </section> */}
     </div>
   );
 }
