@@ -110,7 +110,7 @@ function App() {
       return t + parseFloat(item.price * item.amount);
     }, 0);
     let tax = itemList.reduce((tax, item) => {
-      return tax + item.tax;
+      return tax + parseFloat(item.tax);
     }, 0);
     let finalTotal = parseFloat(total) + parseFloat(tax);
     setTotalPrice(`$ ${formatValue(finalTotal.toFixed(2))}`);
