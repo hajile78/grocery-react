@@ -111,7 +111,7 @@ function App() {
       return t + item.price * item.amount;
     }, 0);
     let tax = itemList.reduce((tax, item) => {
-      return tax + item.tax;
+      return tax + parseFloat(item.tax);
     }, 0);
     let finalTotal = total + tax;
     setTotalPrice(`$ ${formatValue(finalTotal)}`);
@@ -182,9 +182,9 @@ function App() {
           <div className="grocery-total">Total: {totalPrice}</div>
         </div>
       </section>
-      <section className="section-center">
+      {/* <section className="section-center">
         <Form />
-      </section>
+      </section> */}
     </div>
   );
 }
