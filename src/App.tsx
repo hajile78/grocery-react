@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import Alert from "./components/Alert";
 import List from "./components/List";
 import Form from "./components/Form";
+import calc from "./util/calc/calc";
 import "./App.css";
 import { itemProps } from "./components/Props";
 
@@ -32,7 +33,7 @@ function App() {
       id: new Date().getTime().toString(),
       price: formatValue(price),
       amount: amount,
-      tax: addTax ? calculateTax(price * amount) : 0,
+      tax: addTax ? calc.calculateTax(price * amount) : 0,
     };
     setItemList([newItem, ...itemList]);
   };
@@ -49,7 +50,7 @@ function App() {
               ...item,
               price,
               amount,
-              tax: addTax ? calculateTax(price * amount) : 0,
+              tax: addTax ? calc.calculateTax(price * amount) : 0,
             };
           }
           return item;
@@ -104,22 +105,22 @@ function App() {
     setAmount(specificItem ? specificItem.amount : 0);
   };
 
-  const calculateTax = (total: number) => total * 0.075;
+  // const calculateTax = (total: number) => total * 0.075;
 
-  const calculateTotal = () => {
-    let total = itemList.reduce((t, item) => {
-      return t + item.price * item.amount;
-    }, 0);
-    let tax = itemList.reduce((tax, item) => {
-      return tax + parseFloat(item.tax);
-    }, 0);
-    let finalTotal = total + tax;
-    setTotalPrice(`$ ${formatValue(finalTotal)}`);
-  };
+  // const calculateTotal = () => {
+  //   let total = itemList.reduce((t, item) => {
+  //     return t + item.price * item.amount;
+  //   }, 0);
+  //   let tax = itemList.reduce((tax, item) => {
+  //     return tax + parseFloat(item.tax);
+  //   }, 0);
+  //   let finalTotal = total + tax;
+  //   setTotalPrice(`$ ${formatValue(finalTotal)}`);
+  // };
 
   useEffect(() => {
     localStorage.setItem("items", JSON.stringify(itemList));
-    calculateTotal();
+    calc.calculateTotal;
     formFocus.current.focus();
   }, [itemList, formFocus]);
 
@@ -146,7 +147,7 @@ function App() {
                 }`}
                 placeholder="# Of e.g. 1"
                 value={amount}
-                onChange={(e) => setAmount(e.target.value)}
+                onChange={(e) => setAmount(parseInt(e.target.value))}
               />
               <input
                 type="number"
@@ -158,7 +159,7 @@ function App() {
                 }`}
                 placeholder="Price e.g. 1.00"
                 value={price}
-                onChange={(e) => setPrice(e.target.value)}
+                onChange={(e) => setPrice(parseInt(e.target.value))}
               />
             </div>
             <div className="row right">
