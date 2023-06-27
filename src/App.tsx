@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import Alert from "./components/Alert";
 import List from "./components/List";
-import Form from "./components/Form";
 import calc from "./util/calc/calc";
 import "./App.css";
 import { itemProps } from "./components/Props";
@@ -38,7 +37,7 @@ function App() {
     setItemList([newItem, ...itemList]);
   };
 
-  const handleSubmit = (e: React.MouseEvent) => {
+  const handleSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault();
     if (!price || !amount) {
       handleAlert(true, "error", "please enter a value");
@@ -120,8 +119,8 @@ function App() {
 
   useEffect(() => {
     localStorage.setItem("items", JSON.stringify(itemList));
-    calc.calculateTotal;
-    formFocus.current.focus();
+    // calc.calculateTotal;
+    // formFocus.current.focus();
   }, [itemList, formFocus]);
 
   return (
@@ -141,7 +140,7 @@ function App() {
                 ref={formFocus}
                 min="0"
                 step="1"
-                onInput='validity.valid||(value="");'
+                onInput={e => e.checkValidity()}
                 className={`form-control grocery${
                   alert.type === "error" ? " error" : ""
                 }`}
