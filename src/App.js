@@ -48,7 +48,7 @@ function App() {
               amount,
               tax: addTax
                 ? calculateTax(price * amount).toFixed(2)
-                : "0".toFixed(2),
+                : "0",
             };
           }
           return item;
@@ -139,19 +139,19 @@ function App() {
                 ref={formFocus}
                 min="0"
                 step="1"
-                onInput='validity.valid||(value="");'
+                oninput='validity.valid||(() => value=0);'
                 className={`form-control grocery${
                   alert.type === "error" ? " error" : ""
                 }`}
                 placeholder="# Of e.g. 1"
                 value={amount}
-                onChange={(e) => setAmount(e.target.value)}
+                onChange={(e) => setAmount(e.target.value ? e.target.value : 0)}
               />
               <input
                 type="number"
                 min="0"
                 step="0.01"
-                onInput='validity.valid||(value="");'
+                oninput='validity.valid||(value="");'
                 className={`form-control grocery${
                   alert.type === "error" ? " error" : ""
                 }`}
