@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import Alert from "./components/Alert";
 import List from "./components/List";
-import Form from "./components/Form";
 import "./App.css";
 
 const getLocalStorage = () => {
