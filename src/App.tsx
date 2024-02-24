@@ -26,7 +26,18 @@ function App() {
   const [totalPrice, setTotalPrice] = useState<string>("");
   const [addTax, setAddTax] = useState(false);
 
-  const formFocus = useRef();
+  const useFocus = () => {
+    const htmlElRef = useRef(null);
+    const setFocus = () => {
+      htmlElRef.current && (htmlElRef.current as any).focus();
+    };
+
+    return [htmlElRef, setFocus];
+  };
+
+  const [formFocus] = useFocus();
+
+  // const formFocus = useRef<HTMLInputElement>();
   const addItem = (price: number, amount: number) => {
     const newItem: itemProps = {
       id: new Date().getTime().toString(),
@@ -102,26 +113,13 @@ function App() {
     setEditId(id);
     setPrice(specificItem ? specificItem.price : 0);
     setAmount(specificItem ? specificItem.amount : 0);
+    setAddTax(specificItem ? specificItem.tax > 0 : false);
   };
-
-  // const calculateTax = (total: number) => total * 0.075;
-
-  // const calculateTotal = () => {
-  //   let total = itemList.reduce((t, item) => {
-  //     return t + item.price * item.amount;
-  //   }, 0);
-  //   let tax = itemList.reduce((tax, item) => {
-  //     return tax + parseFloat(item.tax);
-  //   }, 0);
-  //   let finalTotal = total + tax;
-  //   setTotalPrice(`$ ${formatValue(finalTotal)}`);
-  // };
 
   useEffect(() => {
     localStorage.setItem("items", JSON.stringify(itemList));
-    // calc.calculateTotal;
-    // formFocus.current.focus();
-  }, [itemList, formFocus]);
+    setTotalPrice(calc.calculateTotal(itemList));
+  }, [itemList]);
 
   return (
     <div className="App">
@@ -140,7 +138,7 @@ function App() {
                 ref={formFocus}
                 min="0"
                 step="1"
-                onInput={e => e.checkValidity()}
+                onInput={(e) => (e.target as any).checkValidity()}
                 className={`form-control grocery${
                   alert.type === "error" ? " error" : ""
                 }`}
@@ -152,7 +150,7 @@ function App() {
                 type="number"
                 min="0"
                 step="0.01"
-                onInput='validity.valid||(value="");'
+                onInput={(e) => (e.target as any).checkValidity()}
                 className={`form-control grocery${
                   alert.type === "error" ? " error" : ""
                 }`}
@@ -169,7 +167,7 @@ function App() {
                 onChange={(e) => setAddTax(!addTax)}
               />
               <button type="submit" className="submit-btn">
-                {isEditing ? "Edit" : "Add"}
+                {isEditing ? "Save" : "Add"}
               </button>
             </div>
           </div>
@@ -182,9 +180,6 @@ function App() {
           <div className="grocery-total">Total: {totalPrice}</div>
         </div>
       </section>
-      {/* <section className="section-center">
-        <Form />
-      </section> */}
     </div>
   );
 }

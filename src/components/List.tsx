@@ -19,6 +19,20 @@ const List = ({ itemList, editItem, removeItem }: Props) => {
       buttons: "Edit/Delete",
     },
   ];
+
+  const formatValue = (value: number) => {
+    let fv = value.toString().split(".");
+    if (value.toString().indexOf(".") >= 0) {
+      if (fv[1].length < 2) {
+        return fv[0] + "." + fv[1] + "0";
+      } else {
+        return value;
+      }
+    } else {
+      return value + ".00";
+    }
+  };
+
   return (
     <div className="grocery-list">
       {itemList &&
@@ -36,9 +50,9 @@ const List = ({ itemList, editItem, removeItem }: Props) => {
         itemList.map((v, id) => {
           return (
             <article className="grocery-item" key={id}>
-              <p className="title">{v.amount}</p>
-              <p className="title">{v.price}</p>
-              <p className="title tax">{v.tax}</p>
+              <p className="title">{formatValue(v.amount)}</p>
+              <p className="title">${formatValue(v.price)}</p>
+              <p className="title tax">${formatValue(v.tax)}</p>
               <div className="btn-container">
                 <button
                   type="button"

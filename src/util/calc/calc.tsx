@@ -1,6 +1,6 @@
 import Item from './Item';
 
-const calculateTax = (total: number) => total * 0.075;
+const calculateTax = (total: number) => parseFloat((total * 0.075).toFixed(2));
 
 const formatValue = (value: number) => {
     let fv: string[] = value.toString().split(".");
@@ -20,7 +20,7 @@ const calculateTotal = (itemList: Item[]) => {
         return t + item.price * item.amount;
     }, 0);
     let tax: number = itemList.reduce((tax: number, item: Item) => {
-        return tax + item.tax;
+        return parseFloat((tax + item.tax).toFixed(2));
     }, 0);
     let finalTotal: number = total + tax;
     return `$ ${formatValue(finalTotal)}`;

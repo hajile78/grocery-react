@@ -1,12 +1,14 @@
 import React, { FormEventHandler, useState } from "react";
 
-type event = {}
+type event = {};
 
 export default function Form() {
   const [success, setSuccess] = useState(false);
 
   const handleSubmit = () => {
-    let myForm: HTMLFormElement = document.getElementById("contact") as HTMLFormElement;
+    let myForm: HTMLFormElement = document.getElementById(
+      "contact"
+    ) as HTMLFormElement;
     let formData: URLSearchParams = new FormData(myForm) as URLSearchParams;
     fetch("/", {
       method: "POST",
