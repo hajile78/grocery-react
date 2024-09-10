@@ -45,9 +45,7 @@ function App() {
               ...item,
               price,
               amount,
-              tax: addTax
-                ? calculateTax(price * amount).toFixed(2)
-                : "0",
+              tax: addTax ? calculateTax(price * amount).toFixed(2) : "0",
             };
           }
           return item;
@@ -138,7 +136,7 @@ function App() {
                 ref={formFocus}
                 min="0"
                 step="1"
-                oninput='validity.valid||(() => value=0);'
+                oninput="validity.valid||(() => value=0);"
                 className={`form-control grocery${
                   alert.type === "error" ? " error" : ""
                 }`}
@@ -148,7 +146,7 @@ function App() {
               />
               <input
                 type="number"
-                min="0"
+                min="0.01"
                 step="0.01"
                 oninput='validity.valid||(value="");'
                 className={`form-control grocery${
